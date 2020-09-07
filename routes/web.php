@@ -10,14 +10,27 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(
+  [
+    "prefix" => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+  ], function() {
+  Route::get('/', function () {
+      return view('welcome');
+  });
 
-Route::get('/', function () {
-    return view('welcome');
+  Auth::routes(['verify' => true]);
+
+  Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+
+  Route::get('redirect/{service}', 'SocialController@redirect');
+  Route::get('callback/{service}', 'SocialController@callback');
+
+
+  Route::get("fillable", "TryController@echo");
+
+  Route::group(["prefix" => "offers"], function() {
+    Route::get("create", "TryController@create");
+    Route::post("store", "TryController@store")->name("offers.store");
+  });
 });
-
-Auth::routes(['verify' => true]);
-
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
-
-Route::get('redirect/{service}', 'SocialController@redirect');
-Route::get('callback/{service}', 'SocialController@callback');

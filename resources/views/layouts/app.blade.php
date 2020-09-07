@@ -33,7 +33,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                      <li class="nav-item dropdown">
+                        <a id="langDropDown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Language <span class="caret"></span>
+                        </a>
 
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="langDropDown">
+                          @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                          <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" class="dropdown-item">
+                            {{ $properties['native'] }}
+                          </a>
+                          @endforeach
+                        </div>
+                      </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -67,6 +79,7 @@
                                 </div>
                             </li>
                         @endguest
+
                     </ul>
                 </div>
             </div>
